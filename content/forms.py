@@ -1,4 +1,6 @@
 from django import forms
+
+from comment.models import Comment
 from content.models import Entry
 
 
@@ -10,11 +12,14 @@ class _CreateEntryForm(forms.ModelForm):
     content = forms.CharField(widget=forms.Textarea(attrs={
         'class': 'form-control',
         'placeholder': 'Enter entry content',
-    }), label='Content')
+    }), label='Content',)
+    image = forms.FileField(widget=forms.FileInput(attrs={
+        'class': 'form-control-file',
+    }), required=False)
 
     class Meta:
         model = Entry
-        fields = ('title', 'content',)
+        fields = ('title', 'content', 'image',)
 
 
 class CreateEntryForm(_CreateEntryForm):
@@ -29,7 +34,7 @@ class _ChangeEntryForm(forms.ModelForm):
     created_at = forms.DateTimeField(
         widget=forms.DateTimeInput(attrs={'class': 'form-control'}),
         required=True,
-        label='Date'
+        label='Date',
     )
     title = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control',

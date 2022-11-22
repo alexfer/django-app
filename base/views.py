@@ -1,24 +1,17 @@
 from django.shortcuts import render
 from content.models import Entry
+from django.views.generic.list import ListView
 
 
-# Create your views here.
-
-def index(request):
-    entries = Entry.objects.all().order_by('-id')[:10:1]
-
-    context = {
-        'entries': entries,
-    }
-
-    return render(request, 'home.html', context)
+class HomeListView(ListView):
+    template_name = 'home.html'
+    queryset = Entry.objects.order_by('-created_at')[:10]
 
 
-def about(request):
+def AboutStaticView(request):
     file = open('base/data/about.txt', 'r')
     if file.mode == 'r':
         description = file.read()
     else:
         description = 'About text'
     return render(request, 'about.html', {'description': description})
-
